@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+
+  "name": "Sports Fantasy Live Score Update",
+  "description": "Это расширение добавляет возможность расчета фэнтези-очков в режиме реального времени на страницу команды.",
+  "version": "1.0",
+
+    "page_action": {
+  },
+  "permissions": [
+    "activeTab",
+    "http://www.sports.ru/fantasy/basketball/team/"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://www.sports.ru/fantasy/basketball/team/*"],
+      "js": ["jquery-2.1.4.min.js", "LiveScore.js"]
+    }
+  ]
+}
