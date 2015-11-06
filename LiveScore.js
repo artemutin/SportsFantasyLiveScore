@@ -1,8 +1,16 @@
 /**
  * Created by chichi on 11/5/15.
  */
-alert("Fuck you");
 $( document ).ready(function() {
     alert("Fuck you again")
-    $( 'h1' ).css("color:red;")
+    $("i").hover(function(){
+        console.log("in")
+        $("i:hover").trigger("click")
+    },function(){
+            console.log("out")
+        }
+    )
+    $(".overlay").click(function(){
+        $(".but.close-x").click();
+    })
 })
