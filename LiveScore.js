@@ -100,4 +100,9 @@ $({
             }
         });
     }
+
+    function startTranslation(player, elem){
+        //player has nextMatch, which we will use
+        //iside elem's text or html we put results
+    }
 });

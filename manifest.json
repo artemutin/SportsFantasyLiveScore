@@ -14,7 +14,8 @@
   "content_scripts": [
     {
       "matches": ["http://www.sports.ru/fantasy/basketball/team/*"],
-      "js": ["jquery-2.1.4.min.js", "LiveScore.js", "Static.js"]
+      "js": ["jquery-2.1.4.min.js", "LiveScore.js", "Static.js"],
+      "css": ["Styles.css"]
     }
   ]
 }
