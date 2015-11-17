@@ -70,7 +70,7 @@ $({
     function initCountdown(){
         function countdownCallback(span, time, match){
             var text = countdownText(time);
-            span.text( time );
+            span.text( text );
             var delay = text[length.text - 1] == "h" ? 30*60*1000 : 1*60*1000;
             time += delay;
             //if game is in future
@@ -96,7 +96,7 @@ $({
                     var time = timeBeforeStart(player.nextMatch);
                     countdownCallback(span, time, player.nextMatch);
                 }
-                span.prependTo(player.nextMatch.elem);
+                span.prependTo(player.elem);
             }
         });
     }
