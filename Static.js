@@ -52,6 +52,10 @@ var Static= new function(){
             return this.teams[ city ];
         }
     }
+    //date should be in UTC timezone!!
+    this.getGameDay(date){
+        return date -
+    }
 }()
 //teams.sports_content.teams.team.filter(function(x){return x.is_nba_team;})
 

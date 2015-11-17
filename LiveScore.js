@@ -10,6 +10,9 @@ $({
     });
 
     var matches = $("div.stat.mB20 table.stat-table tr").map(function(idx, elem){
+        if (idx == 0){
+            return;
+        }
         elem = $(elem);
         return {"dateStr" : elem.find("td").first().text(),
             "homeTeam" : elem.find("td.owner-td").text().trim(),
@@ -27,6 +30,22 @@ $({
             player.num = new RegExp(/\([\D]*([\d]+)[\D]*\)/).exec(playerNum)[1];
         }, "html");
         return playerNum;
-    };
+    }
 
+    function timeBeforeStart(match){
+        var MoscowTimeToUtc = 3*60*60*1000;
+        var splitDate = match.dateStr.split( /[\.\ :]/);
+        return Date.now() - new Date(Date.UTC(2015, splitDate[1]-1, splitDate[0], splitDate[2], splitDate[3]) - MoscowTimeToUtc);
+    }
+
+    function nextMatch(player){
+        for (i=0; i < matches.length; ++i){
+            if (matches[i].awayTeam == player.team || matches[i].homeTeam == player.team){
+                player.nextMatch = matches[i];
+                return;
+            }
+        }
+        player.nextMatch = null;
+
+    }
 });
