@@ -40,7 +40,8 @@ $({
 
     function nextMatch(player){
         for (i=0; i < matches.length; ++i){
-            if (matches[i].awayTeam == player.team || matches[i].homeTeam == player.team){
+            if ( (matches[i].awayTeam == player.team || matches[i].homeTeam == player.team) &&
+            timeBeforeStart(matches[i]) < 0){
                 player.nextMatch = matches[i];
                 return;
             }
@@ -48,6 +49,8 @@ $({
         player.nextMatch = null;
 
     }
+
+    //form a string with time, remaining til the game
     function countdownText(time){
         var minutes = time/1000/60;
         var hours = minutes/60;
@@ -56,19 +59,33 @@ $({
             var letter = "h";
             time = hours;
         }else{
-            letter = "m";
+            letter = "m";te
             time = minutes;
         }
         with (Math) {
             return round(abs(time))+ letter
         };
     }
+
     function initCountdown(){
+        function countdownCallback(span, time, match){
+            var text = countdownText(time);
+            span.text( time );
+            var delay = text[length.text - 1] == "h" ? 30*60*1000 : 1*60*1000;
+            time += delay;
+            //if game is in future
+            if (time < 0){
+                match.countdownTimeoutID = setTimeout(countdownCallback, delay, span, time, match);
+            }else{
+                //set state and begin a translation
+                match.countdownTimeoutID = null;
+            }
+        }
         //find next match for a player
-        players.forEach(nextMatch);
+        players.get().forEach(nextMatch);
         //for each player box, set up a label
-        players.forEach(function(player, idx){
-            if (elem.find("span.live-score").length > 0){
+        players.get().forEach(function(player, idx){
+            if (player.elem.find("span.live-score").length > 0){
                 //we already have a countdown timer
                 return;
             }else{
@@ -76,10 +93,11 @@ $({
                 if (player.nextMatch == null){
                     span.text("NW");
                 }else{
-                    var time = timeBeforeStart(match);
-                    //for now only for a countdown
+                    var time = timeBeforeStart(player.nextMatch);
+                    countdownCallback(span, time, player.nextMatch);
                 }
+                span.prependTo(player.nextMatch.elem);
             }
-        })
+        });
     }
 });
