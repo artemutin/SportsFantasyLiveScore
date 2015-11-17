@@ -59,7 +59,7 @@ $({
             var letter = "h";
             time = hours;
         }else{
-            letter = "m";te
+            letter = "m";
             time = minutes;
         }
         with (Math) {
