@@ -48,4 +48,38 @@ $({
         player.nextMatch = null;
 
     }
+    function countdownText(time){
+        var minutes = time/1000/60;
+        var hours = minutes/60;
+        var time;
+        if (Math.abs(hours) > 1){
+            var letter = "h";
+            time = hours;
+        }else{
+            letter = "m";
+            time = minutes;
+        }
+        with (Math) {
+            return round(abs(time))+ letter
+        };
+    }
+    function initCountdown(){
+        //find next match for a player
+        players.forEach(nextMatch);
+        //for each player box, set up a label
+        players.forEach(function(player, idx){
+            if (elem.find("span.live-score").length > 0){
+                //we already have a countdown timer
+                return;
+            }else{
+                var span = $("<span class='live-score'></span>");
+                if (player.nextMatch == null){
+                    span.text("NW");
+                }else{
+                    var time = timeBeforeStart(match);
+                    //for now only for a countdown
+                }
+            }
+        })
+    }
 });
