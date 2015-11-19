@@ -35,7 +35,7 @@ var Static= new function(){
         ,{"is_nba_team":true,"team_name":"Utah","team_nickname":"Jazz","team_code":"jazz","team_abbrev":"UTA","city":"Utah","state":"UT","team_short_name":"Utah","team_id":1610612762,"conference":"West","division_id":"Northwest"}
         ,{"is_nba_team":true,"team_name":"Washington","team_nickname":"Wizards","team_code":"wizards","team_abbrev":"WAS","city":"Washington","state":"DC","team_short_name":"Washington","team_id":1610612764,"conference":"East","division_id":"Southeast"}
     ];
-    ruTeamsByCity = new Hash();
+    ruTeamsByCity = {};
     ["Атланта","Бостон","Бруклин","Шарлотт", "Чикаго", "Кливленд", "Даллас", "Денвер", "Детройт", "Голден Стэйт", "Хьюстон", "Индиана", "Клипперс", "Лейкерс"
         ,"Мемфис", "Майами", "Милуоки", "Миннесота", "Новый Орлеан", "Нью-Йорк", "Оклахома", "Орландо", "Филадельфия", "Финикс", "Портленд", "Сакраменто", "Торонто"
         , "Юта", "Вашингтон"].forEach(function(city, index){
@@ -52,10 +52,7 @@ var Static= new function(){
             return this.teams[ city ];
         }
     }
-    //date should be in UTC timezone!!
-    this.getGameDay(date){
-        return date -
-    }
+
 }()
 //teams.sports_content.teams.team.filter(function(x){return x.is_nba_team;})
 

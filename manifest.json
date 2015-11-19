@@ -9,7 +9,8 @@
   },
   "permissions": [
     "activeTab",
-    "http://www.sports.ru/fantasy/basketball/team/"
+    "http://www.sports.ru/fantasy/basketball/team/",
+    "http://data.nba.com/jsonp/5s/json/cms/noseason/scoreboard/"
   ],
   "content_scripts": [
     {

@@ -1,6 +1,8 @@
-$({
+$(document).ready(function(){
+    //this is html elements with player info on `court`
     var playerBoxes = $("ins.player.hold");
 
+    //player objects to work with
     var players = playerBoxes.map(function(idx, elem){
         elem = $(elem);
         return {"team" : elem.find("img.t-shirt").attr("title"),
@@ -9,6 +11,7 @@ $({
         }
     });
 
+    //this is list of matches, which was not played or aggregated by sports.ru in the bottom of page
     var matches = $("div.stat.mB20 table.stat-table tr").map(function(idx, elem){
         if (idx == 0){
             return;
@@ -19,6 +22,11 @@ $({
             "awayTeam" : elem.find("td.guests-td").text().trim()
         }
     });
+    //this is hash of nba calendar, hashed by date
+    var nbaMatches = {};
+
+    initCountdown();
+    getMatchLink(matches[0]);
 
     function getPlayerNumber(player){
         var url = "http://www.sports.ru/fantasy/basketball/player/info/150/"+player["data-id"]+".html";
@@ -105,4 +113,48 @@ $({
         //player has nextMatch, which we will use
         //iside elem's text or html we put results
     }
-});
+
+    function callback(data){
+        console.log("in")
+        console.log(data)
+    }
+
+
+    function getMatchLink(match){
+        var url = "http://data.nba.com/jsonp/5s/json/cms/noseason/scoreboard/";//20151116/games.json
+        //from comparison of match times on nba.com and sports.ru
+        var timeDiff = 8*60*60*1000;//hours
+        var splitDate = match.dateStr.split( /[\.\ :]/);
+        var date = new Date(Date.UTC(2015, splitDate[1]-1, splitDate[0], splitDate[2]) - timeDiff) ;
+        url += date.getUTCFullYear()
+        url += (date.getUTCMonth()+1)
+        url += date.getUTCDate();
+        url += "/games.json";
+
+        function callback( response ){
+            var parInd = response.indexOf('{');
+            var matches = $.parseJSON(response.slice(parInd, -2));
+            var date = matches.games.sports_meta.date_time;
+            //put matches to cache
+            nbaMatches[date] = nbaMatches[date] || matches;
+            console.log(matches)
+            var homeID = Static.getTeamID({city: match.homeTeam, lang: "ru"});
+            var awayID = Static.getTeamID({city: match.awayTeam, lang: "ru"});
+            var nbaMatch = null;
+            var gamesArray = matches.games.game;
+            for ( i=0; i < gamesArray.length; ++i){
+                if (gamesArray[i].home.id == homeID && gamesArray[i].visitor.id == awayID){
+                    nbaMatch["id"] = gamesArray[i].id;
+                    nbaMatch["date"] = gamesArray[i].date;
+                    break;
+                }
+            }
+        }
+
+        $.ajax({
+            url: url,
+            dataType: "text",//it's actually jsonp, but i got problems with scopes, so i give up
+            success: callback
+        });
+    }
+})
